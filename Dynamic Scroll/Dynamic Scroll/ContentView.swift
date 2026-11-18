@@ -6,22 +6,13 @@
 //
 
 import SwiftUI
-import Foundation
-
-struct ScrollProportion: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
 
 struct ContentView: View {
     
     @State private var scrollToggle = true
     @State private var offsetToggle = true
     @State private var opacityToggle = true
-    @State var currentIndex = 0
+    @State private var currentIndex = 0
     
     var title: some View {
         HStack {
@@ -34,14 +25,14 @@ struct ContentView: View {
         ZStack {
             if scrollToggle {
                 ScrollViewReader { proxy in
-                    VerticalScrollView(currentIndex: $currentIndex)
+                    PagedScrollView(axis: .vertical, currentIndex: $currentIndex)
                         .onAppear {
                             proxy.scrollTo(currentIndex)
                         }
                 }.transition(.opacity)
             } else {
                 ScrollViewReader { proxy in
-                    HorizontalScrollView(currentIndex: $currentIndex)
+                    PagedScrollView(axis: .horizontal, currentIndex: $currentIndex)
                         .onAppear {
                             proxy.scrollTo(currentIndex)
                         }
@@ -54,7 +45,7 @@ struct ContentView: View {
                 .offset(y: offsetToggle ? -50 : -30)
                 .frame(height: 480)
             HStack {
-                ForEach(0...4, id: \.self) { i in
+                ForEach(0..<ImageView.count, id: \.self) { i in
                     Circle()
                         .fill(.black)
                         .frame(width: 8)
@@ -110,12 +101,9 @@ struct ContentView: View {
             changeScrollButton
             Text("Created by Magesh Sridhar using SwiftUI 💙").font(.subheadline).bold()
         }
-        
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+#Preview {
+    ContentView()
 }

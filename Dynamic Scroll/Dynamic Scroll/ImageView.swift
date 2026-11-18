@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ImageView: View {
+    /// Number of images in the asset catalog, named "0" through "4".
+    static let count = 5
+
     let i: Int
     var body: some View {
         Image("\(i)")
