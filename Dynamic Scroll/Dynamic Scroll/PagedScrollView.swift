@@ -51,8 +51,10 @@ struct PagedScrollView: View {
                     Color.clear
                         .preference(key: ScrollProportion.self, value: proportion)
                         .onPreferenceChange(ScrollProportion.self) { proportion in
+                            // Rounded, not truncated: vertical pages are slightly taller than the
+                            // viewport, so page 2 measures as 1.99 and would otherwise report page 1.
                             withAnimation(.spring()) {
-                                currentIndex = Int(proportion * CGFloat(ImageView.count - 1))
+                                currentIndex = Int((proportion * CGFloat(ImageView.count - 1)).rounded())
                             }
                         }
                 }
